@@ -1,0 +1,23 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyc
+
+# Flet / build output
+.flet/
+build/
+dist/
+
+# Archivos temporales
+out.txt
+*.log
+
+# Entornos virtuales
+venv/
+.env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
