@@ -46,3 +46,6 @@ class AppState:
 
     def is_favorite(self, pid: int) -> bool:
         return pid in self.favorites
+
+    def get_favorites(self) -> list[int]:
+        return list(self.favorites)
