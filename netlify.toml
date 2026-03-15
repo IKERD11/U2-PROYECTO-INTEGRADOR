@@ -1,5 +1,6 @@
 [build]
-[build.environment]
-  PIP_NO_CACHE_DIR = "true"
   command = "pip install -r requirements.txt && flet publish main.py"
   publish = "dist"
+
+[build.environment]
+  PIP_NO_CACHE_DIR = "true"
