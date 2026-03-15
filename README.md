@@ -18,6 +18,17 @@ Este proyecto es una aplicación interactiva desarrollada en Python utilizando e
 
 El proyecto sigue una arquitectura modular y organizada, separando el código en distintas responsabilidades para hacerlo más mantenible:
 
+```mermaid
+graph TD
+    Main["main.py<br>(Punto de Entrada)"] --> Vistas["views/<br>(catalog_view.py, favorites_view.py)"]
+    Main --> Estado["state/app_state.py<br>(Estado de la App)"]
+    Vistas --> Componentes["components/product_card.py<br>(Componentes UI)"]
+    Componentes --> Estado
+    Vistas --> Repositorio["data/repository.py<br>(Fuente de Datos)"]
+    Repositorio --> Modelo["models/product.py<br>(Modelo de Datos)"]
+    Estado -.-> Modelo
+```
+
 ### 1. Punto de Entrada (`main.py`)
 Es el punto de entrada principal. Se encarga de inicializar la página, definir el tema visual (modo oscuro), y construir la interfaz con todos sus componentes. También gestiona la lógica de diálogos y pop-ups.
 ```python
@@ -295,7 +306,41 @@ Este documento sirve como reporte para acreditar la Unidad 2, detallando la arqu
 
 ### 1. Diagrama de Clases
 La aplicación fue diseñada siguiendo principios de modularidad y responsabilidad única. A continuación, se muestra el diagrama de clases representando el modelo de datos, la interfaz de inicio y el componente reutilizable:
-*(Nota: Aquí deberás insertar la imagen de tu diagrama de clases)*
+
+```mermaid
+classDiagram
+    class Product {
+        +int id
+        +str name
+        +str description
+        +float price
+        +str image_path
+        +str category
+        +int stock
+        +float rating
+    }
+    
+    class AppState {
+        +dict cart
+        +set favorites
+        +add_to_cart(product)
+        +toggle_favorite(pid)
+        +get_cart_count() int
+    }
+    
+    class Repository {
+        +get_products() List~Product~
+    }
+    
+    class ProductCard {
+        -Product product
+        +build() Container
+    }
+
+    Repository --> Product : Obtiene/Instancia
+    AppState "1" *-- "*" Product : Almacena referencias
+    ProductCard --> Product : Recibe e inyecta en UI
+```
 
 ### 2. Explicación de la Herencia
 Para el desarrollo del componente visual Custom Card (tarjeta de producto reutilizable), se utilizó el concepto de Herencia.
