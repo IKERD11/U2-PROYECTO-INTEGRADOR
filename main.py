@@ -109,7 +109,13 @@ def main(page: ft.Page):
 
     def open_cart(e=None):
         _refresh_cart()
-        main_dialog.title = ft.Text("Mi Carrito", weight=ft.FontWeight.W_800, size=24)
+        main_dialog.title = ft.Row(
+            [
+                ft.Text("Mi Carrito", weight=ft.FontWeight.W_800, size=24),
+                ft.IconButton(ft.Icons.CLOSE_ROUNDED, icon_color=TEXT_MAIN, on_click=close_dialog)
+            ],
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN
+        )
         main_dialog.content = cart_body
         main_dialog.actions = [
             ft.TextButton("VACIAR", icon=ft.Icons.DELETE_SWEEP_ROUNDED, style=ft.ButtonStyle(color="#EF4444"), on_click=lambda e: [state.clear_cart(), update_badge(), _refresh_cart(), page.update()]),
