@@ -296,6 +296,54 @@ Cuando el usuario da clic en la imagen, se llama al modal. El pop-up de Flet (`f
         page.update()
 ```
 
+### 7. Lógica de Filtrado y Búsqueda (`catalog_view.py`)
+El catálogo no solo muestra productos, sino que incluye un motor de búsqueda y filtros en tiempo real. Esta función re-evalúa la lista completa de productos basándose en diccionarios de configuración (`fs`) cada vez que el usuario escribe algo o cambia el rango de precio.
+```python
+    def get_filtered():
+        # Copia la lista original de la base de datos simulada
+        products = list(all_products)
+        
+        # 1. Filtro por categoría exacta
+        if fs["cat"] != "Todas": 
+            products = [p for p in products if p.category == fs["cat"]]
+            
+        # 2. Búsqueda por texto (Nombre o Descripción) manual
+        if fs["search"]:
+            q = fs["search"].lower()
+            products = [p for p in products if q in p.name.lower() or q in p.description.lower()]
+            
+        # 3. Filtro numérico por rango de precios
+        products = [p for p in products if fs["min"] <= p.price <= fs["max"]]
+        
+        # 4. Ordenamiento (Sort)
+        if fs["sort"] == "price_asc": products.sort(key=lambda x: x.price)
+        elif fs["sort"] == "price_desc": products.sort(key=lambda x: x.price, reverse=True)
+        elif fs["sort"] == "name_asc": products.sort(key=lambda x: x.name)
+        return products
+```
+Este método se invoca antes de construir el "Grid" `ft.ResponsiveRow` y es clave para dar una auténtica experiencia E-commerce dinámico.
+
+### 8. Generador de Código QR (`generate_qr.py`)
+Se incluyó un pequeño script externo a la lógica de **Flet** que utiliza la librería `qrcode` y `Pillow`. Su objetivo es crear un puente entre el mundo físico y la aplicación web para facilitar la distribución del proyecto.
+```python
+import qrcode
+from PIL import Image
+
+def create_project_qr():
+    # URL de producción del proyecto alojado
+    project_url = "https://productoscat.netlify.app/"
+    
+    # Genera la matriz QR a partir del un string
+    qr_image = qrcode.make(project_url)
+    
+    # Guarda el resultado gráficamente dentro de la carpeta assets
+    qr_image.save("assets/tienda_qr.png")
+    print("¡El código QR se generó con éxito en assets/tienda_qr.png!")
+
+if __name__ == "__main__":
+    create_project_qr()
+```
+
 ---
 ¡Gracias por visitar el proyecto! Explora el código y prueba la tienda funcional en el [enlace oficial](https://productoscat.netlify.app/).
 
