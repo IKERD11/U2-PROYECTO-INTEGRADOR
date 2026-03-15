@@ -421,7 +421,18 @@ Esto levanta un servidor interno en Flet que mapea las rutas relativas en los co
 Para comprobar la correcta ejecución, ejecuta el archivo `main.py`.
 
 La siguiente imagen representa visualmente la disposición final de los componentes en la Pantalla (GUI) utilizando un `ft.Row` con `wrap=True` que permite que las tarjetas fluyan a la siguiente línea al redimensionar la ventana:
-*(Nota: Aquí deberás agregar tus capturas de pantalla)*
+
+**1. Pantalla del Catálogo Principal:**
+![Catálogo de Productos](assets/screenshot_catalog.png)
+
+**2. Vista de Detalles del Producto (Pop-up):**
+![Detalle del Producto](assets/screenshot_detail.png)
+
+**3. Sección de Mis Favoritos:**
+![Mis Favoritos](assets/screenshot_favorites.png)
+
+**4. Modal del Carrito de Compras:**
+![Carrito de Compras](assets/screenshot_cart.png)
 
 La aplicación cumple con el estilo coherente, sombras sutiles, imágenes estáticas y botones de acción en todos los componentes dinámicos.
 
