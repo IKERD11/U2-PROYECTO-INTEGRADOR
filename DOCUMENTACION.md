@@ -197,5 +197,93 @@ Para correr la aplicación en tu computadora, sigue estos pasos:
    ```
    *Alternativamente, puedes usar `root_web.py` o `run_mobile.py` dependiendo del entorno que quieras probar.*
 
+### 6. Funciones Centrales (`main.py`)
+El archivo `main.py` contiene tanto las validaciones iniciales de las pantallas como funciones exclusivas para manejar la UI compleja y delegar estados. A continuación explico sus componentes clave:
+
+#### `update_badge()`
+Muestra visualmente sobre el icono de carrito la cantidad de artículos elegidos. Llama al `state.get_cart_count()` para pedir la cuenta y muestra el número en la UI.
+```python
+    def update_badge():
+        count = state.get_cart_count()
+        badge_ref.current.visible = count > 0
+        badge_text_ref.current.value = str(count)
+        page.update()
+```
+
+#### `_refresh_cart()` y `open_cart()`
+Manejan la lógica de renderizar o actualizar el pop-up de diálogo con el carrito de compras del usuario. 
+`_refresh_cart()` se encarga de crear internamente la fila de cada producto (botones sumar "+", restar "-" o eliminar un ítem total), y `open_cart()` abre el diálogo sobre el resto de la página.
+```python
+    def _refresh_cart():
+        items = state.get_cart_items()
+        if not items:
+            cart_body.controls = [ ... ] # Muestra mensaje de "Tu carrito está vacío"
+        else:
+            rows = []
+            for item in items: # Recorre todo lo almacenado en estado
+                p, qty = item["product"], item["qty"]
+                # Cierres lambda vinculados al ID del producto `p.id`
+                def dec(pid=p.id): state.update_cart_qty(pid, -1); update_badge(); _refresh_cart(); page.update()
+                def inc(pid=p.id): state.update_cart_qty(pid, 1); update_badge(); _refresh_cart(); page.update()
+                def rem(pid=p.id): state.remove_from_cart(pid); update_badge(); _refresh_cart(); page.update()
+```
+
+#### `switch_tab()` y la Navegación (Tabs)
+Para simular el cambio entre el "Catálogo" y "Favoritos", en lugar de recargar pantallas en el navegador, se cambia el `content` del contenedor principal usando Flet Reference `Ref()`.
+```python
+    content_area_ref = ft.Ref[ft.Container]()
+    panels = [catalog_panel, favorites_panel] # Arreglo con la interfaz de las ventanas devueltas
+
+    def switch_tab(idx: int):
+        # Actualiza visualmente las variables en panel elegido
+        if idx == 0:
+            refresh_catalog()
+        elif idx == 1:
+            refresh_favs()
+        
+        # Intercambia el contenedor mostrado
+        content_area_ref.current.content = panels[idx]
+        
+        # Modifica la barrita de estado remarcando la opción del menú superior
+        for i, ref in enumerate(tab_indicator_refs):
+            ref.current.border = ft.Border(bottom=ft.BorderSide(3, PRIMARY if i == idx else "transparent"))
+        page.update()
+```
+
+#### `open_detail(product: Product)`
+Cuando el usuario da clic en la imagen, se llama al modal. El pop-up de Flet (`ft.AlertDialog`) se configura inyectando un `Container` con la estructura del modelo, cambiando valores como el tamaño del texto dependiente de la función `get_is_mobile()`. Incluye sus propias sub-funciones lambda para agregar carrito o a favoritos desde este acercamiento.
+```python
+    def open_detail(product: Product):
+        # Sub-funciones anclas a los botones visuales grandes
+        def add(e):
+            state.add_to_cart(product)
+            update_badge()
+            page.snack_bar = ft.SnackBar(
+                content=ft.Text(f"¡{product.name} añadido al carrito!", color="#FFFFFF"), 
+                bgcolor="#10B981"
+            )
+            page.snack_bar.open = True
+            page.update()
+
+        def fav(e):
+            state.toggle_favorite(product.id)
+            is_fav = state.is_favorite(product.id)
+            e.control.icon = ft.Icons.FAVORITE if is_fav else ft.Icons.FAVORITE_OUTLINE_ROUNDED
+            e.control.update()
+
+        # Construcción visual
+        main_dialog.content = ft.Container(
+            content=ft.Column([
+                ft.Image(src=product.image_path, fit=ft.BoxFit.COVER),
+                ft.Text(product.name, size=28, weight=ft.FontWeight.W_800),
+                ft.Text(f"${product.price:,.2f}", size=32, color=TEXT_MAIN),
+                ft.Text(product.description, color=TEXT_SUB),
+                # Botones que llaman a add() y fav() omitidos...
+            ])
+        )
+        main_dialog.open = True
+        page.update()
+```
+
 ---
 ¡Gracias por visitar el proyecto! Explora el código y prueba la tienda funcional en el [enlace oficial](https://productoscat.netlify.app/).
