@@ -247,8 +247,10 @@ def main(page: ft.Page):
                 ft.Stack([
                     ft.IconButton(ft.Icons.SHOPPING_BAG_OUTLINED, icon_size=24, icon_color=TEXT_MAIN, on_click=open_cart),
                     ft.Container(
-                        ref=badge_ref, visible=False, content=ft.Text("0", ref=badge_text_ref, size=9, color="#FFF", weight=ft.FontWeight.W_800),
-                        bgcolor="#EF4444", width=16, height=16, border_radius=8, alignment=ft.Alignment(0, 0), right=4, top=4
+                        ref=badge_ref, visible=False,
+                        content=ft.Text("0", ref=badge_text_ref, size=12, color=ft.colors.WHITE, weight=ft.FontWeight.W_900, text_align=ft.TextAlign.CENTER),
+                        bgcolor=ft.colors.RED_500, width=20, height=20, border_radius=10, 
+                        alignment=ft.alignment.center, right=2, top=2
                     )
                 ]),
                 ft.CircleAvatar(foreground_image_src="https://api.dicebear.com/7.x/avataaars/svg?seed=Lucky", radius=16)
