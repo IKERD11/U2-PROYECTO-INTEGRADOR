@@ -250,7 +250,7 @@ def main(page: ft.Page):
                         ref=badge_ref, visible=False,
                         content=ft.Text("0", ref=badge_text_ref, size=12, color=ft.Colors.WHITE, weight=ft.FontWeight.W_900, text_align=ft.TextAlign.CENTER),
                         bgcolor=ft.Colors.RED_500, width=20, height=20, border_radius=10, 
-                        alignment=ft.alignment.center, right=2, top=2
+                        alignment=ft.Alignment(0, 0), right=2, top=2
                     )
                 ]),
                 ft.CircleAvatar(foreground_image_src="https://api.dicebear.com/7.x/avataaars/svg?seed=Lucky", radius=16)
