@@ -22,7 +22,7 @@ def main(page: ft.Page):
     page.theme_mode = ft.ThemeMode.DARK
     import os
     page.window_width = 390 if os.getenv("FLET_MOBILE") else 1200
-    page.window_height = 844 if os.getenv("FLET_MOBILE") else 900
+    page.window_height = 844 if os.getenv("FLET_MOBILE") else 750
     
     # We remove custom Inter font to prevent CORS issues on Web, 
     # letting it gracefully fallback to system fonts or built-ins.
@@ -119,7 +119,12 @@ def main(page: ft.Page):
         main_dialog.content = cart_body
         main_dialog.actions = [
             ft.TextButton("VACIAR", icon=ft.Icons.DELETE_SWEEP_ROUNDED, style=ft.ButtonStyle(color="#EF4444"), on_click=lambda e: [state.clear_cart(), update_badge(), _refresh_cart(), page.update()]),
-            ft.ElevatedButton("PAGAR AHORA", bgcolor=PRIMARY, color="#FFFFFF", style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8)), on_click=close_dialog),
+            ft.ElevatedButton(
+                content=ft.Text("PAGAR AHORA", color="#FFFFFF", weight=ft.FontWeight.W_700), 
+                bgcolor=PRIMARY, 
+                style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8)), 
+                on_click=close_dialog
+            ),
         ]
         main_dialog.open = True
         page.update()
@@ -176,8 +181,11 @@ def main(page: ft.Page):
                     ft.Container(height=10),
                     ft.Row([
                         ft.ElevatedButton(
-                            content=ft.Row([ft.Icon(ft.Icons.ADD_SHOPPING_CART_ROUNDED), ft.Text("AÑADIR AL CARRITO", weight=ft.FontWeight.W_700)], alignment=ft.MainAxisAlignment.CENTER),
-                            bgcolor=PRIMARY, color="#FFF", expand=True, height=50,
+                            content=ft.Row([
+                                ft.Icon(ft.Icons.ADD_SHOPPING_CART_ROUNDED, color="#FFFFFF"), 
+                                ft.Text("AÑADIR AL CARRITO", color="#FFFFFF", weight=ft.FontWeight.W_700)
+                            ], alignment=ft.MainAxisAlignment.CENTER),
+                            bgcolor=PRIMARY, expand=True, height=50,
                             disabled=product.stock <= 0, on_click=add,
                             style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=12))
                         ),
@@ -224,8 +232,7 @@ def main(page: ft.Page):
             refresh_favs()
         content_area_ref.current.content = panels[idx]
         for i, ref in enumerate(tab_indicator_refs):
-            ref.current.bgcolor = PRIMARY if i == idx else "transparent"
-            ref.current.width = 40 if i == idx else 0
+            ref.current.border = ft.Border(bottom=ft.BorderSide(3, PRIMARY if i == idx else "transparent"))
         page.update()
 
     nav_bar = ft.Container(
@@ -236,13 +243,16 @@ def main(page: ft.Page):
             ft.Row([
                 ft.Container(
                     on_click=lambda e, i=idx: switch_tab(i),
-                    content=ft.Column([
-                        ft.Text(label, size=14, weight=ft.FontWeight.W_600, color=TEXT_MAIN),
-                        ft.Container(ref=tab_indicator_refs[idx], height=3, width=40 if idx==0 else 0, bgcolor=PRIMARY, border_radius=2, animate=300)
-                    ], spacing=4, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-                    padding=ft.Padding.only(top=24),
+                    content=ft.Container(
+                        ref=tab_indicator_refs[idx],
+                        content=ft.Text(label, size=14, weight=ft.FontWeight.W_600, color=TEXT_MAIN),
+                        padding=ft.Padding(bottom=4, left=0, right=0, top=0),
+                        border=ft.Border(bottom=ft.BorderSide(3, PRIMARY if idx==0 else "transparent")),
+                        animate=300
+                    ),
+                    alignment=ft.Alignment(0, 0),
                 ) for idx, label in enumerate(tab_labels)
-            ], spacing=40),
+            ], spacing=40, vertical_alignment=ft.CrossAxisAlignment.CENTER),
             ft.Row([
                 ft.Stack([
                     ft.IconButton(ft.Icons.SHOPPING_BAG_OUTLINED, icon_size=24, icon_color=TEXT_MAIN, on_click=open_cart),
@@ -282,10 +292,11 @@ def main(page: ft.Page):
     # ── RESPONSIVE BUILDER ──────────────────────────────────────────
     def build_app():
         is_mobile = get_is_mobile()
-        px = 12 if is_mobile else 60
+        px_side = 12 if is_mobile else 60
+        px_top_bottom = 12 if is_mobile else 20
 
         # Update Header
-        header.padding = ft.Padding.symmetric(horizontal=px, vertical=20 if is_mobile else 40)
+        header.padding = ft.Padding.symmetric(horizontal=px_side, vertical=20 if is_mobile else 40)
         header_row = header.content
         header_row.wrap = is_mobile
         header_row.controls[0].expand = not is_mobile
@@ -296,7 +307,7 @@ def main(page: ft.Page):
             header_sub_ref.current.visible = not is_mobile  # hide subtitle on very small screens
 
         # Update Nav Bar
-        nav_bar.padding = ft.Padding.symmetric(horizontal=px)
+        nav_bar.padding = ft.Padding.symmetric(horizontal=px_side)
         nav_bar.content.wrap = is_mobile
         for child in nav_bar.content.controls:
             if hasattr(child, "wrap"):
@@ -305,7 +316,7 @@ def main(page: ft.Page):
 
         # Update Content Area
         if content_area_ref.current:
-            content_area_ref.current.padding = ft.Padding.only(left=px, right=px, bottom=px)
+            content_area_ref.current.padding = ft.Padding.only(left=px_side, right=px_side, top=px_top_bottom, bottom=px_top_bottom)
 
         page.update()
 

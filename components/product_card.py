@@ -67,11 +67,11 @@ def build_product_card(product: Product, state, on_add_to_cart, on_toggle_fav, o
             controls=[
                 # Image Section
                 ft.Stack(
-                    height=200,
+                    height=240,
                     controls=[
                         ft.Image(
                             src=product.image_path,
-                            height=200,
+                            height=240,
                             width=float("inf"),
                             fit=ft.BoxFit.COVER,
                         ),
@@ -81,7 +81,7 @@ def build_product_card(product: Product, state, on_add_to_cart, on_toggle_fav, o
                             bgcolor=cat_color,
                             padding=ft.Padding.symmetric(horizontal=12, vertical=6),
                             border_radius=ft.BorderRadius.only(bottom_right=12, top_left=16),
-                            left=0, top=0,
+                            left=-1, top=-1,
                         ),
                         # Favorite Button
                         ft.Container(
@@ -115,29 +115,33 @@ def build_product_card(product: Product, state, on_add_to_cart, on_toggle_fav, o
                 ),
                 # Info Section
                 ft.Container(
-                    padding=20,
+                    padding=15,
                     content=ft.Column(
-                        spacing=10,
+                        spacing=6,
                         controls=[
-                            ft.Text(product.name, size=18, color=TEXT_MAIN, weight=ft.FontWeight.W_700, max_lines=1, overflow=ft.TextOverflow.ELLIPSIS),
+                            ft.Text(product.name, size=16, color=TEXT_MAIN, weight=ft.FontWeight.W_700, max_lines=1, overflow=ft.TextOverflow.ELLIPSIS),
                             build_stars(product.rating),
-                            ft.Text(product.description, size=13, color=TEXT_SUB, max_lines=2, overflow=ft.TextOverflow.ELLIPSIS),
+                            ft.Text(product.description, size=12, color=TEXT_SUB, max_lines=2, overflow=ft.TextOverflow.ELLIPSIS),
                             ft.Row(
                                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                                 vertical_alignment=ft.CrossAxisAlignment.CENTER,
                                 controls=[
-                                    ft.Text(f"${product.price:,.2f}", size=24, color=PRIMARY, weight=ft.FontWeight.W_800),
-                                    ft.IconButton(
-                                        icon=ft.Icons.ADD_SHOPPING_CART_ROUNDED,
-                                        icon_size=20,
-                                        icon_color=ft.Colors.WHITE,
+                                    ft.Text(f"${product.price:,.2f}", size=20, color=PRIMARY, weight=ft.FontWeight.W_800),
+                                    ft.Container(
+                                        content=ft.IconButton(
+                                            icon=ft.Icons.ADD_SHOPPING_CART_ROUNDED,
+                                            icon_size=18,
+                                            icon_color=ft.Colors.WHITE,
+                                            disabled=not in_stock,
+                                            on_click=add_cart,
+                                            style=ft.ButtonStyle(
+                                                shape=ft.RoundedRectangleBorder(radius=10),
+                                            )
+                                        ),
+                                        width=36, height=36,
                                         bgcolor=PRIMARY if in_stock else "#CBD5E1",
-                                        disabled=not in_stock,
-                                        on_click=add_cart,
-                                        width=44, height=44,
-                                        style=ft.ButtonStyle(
-                                            shape=ft.RoundedRectangleBorder(radius=12),
-                                        )
+                                        border_radius=10,
+                                        alignment=ft.Alignment(0, 0)
                                     )
                                 ]
                             )
