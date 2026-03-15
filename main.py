@@ -248,8 +248,8 @@ def main(page: ft.Page):
                     ft.IconButton(ft.Icons.SHOPPING_BAG_OUTLINED, icon_size=24, icon_color=TEXT_MAIN, on_click=open_cart),
                     ft.Container(
                         ref=badge_ref, visible=False,
-                        content=ft.Text("0", ref=badge_text_ref, size=12, color=ft.colors.WHITE, weight=ft.FontWeight.W_900, text_align=ft.TextAlign.CENTER),
-                        bgcolor=ft.colors.RED_500, width=20, height=20, border_radius=10, 
+                        content=ft.Text("0", ref=badge_text_ref, size=12, color=ft.Colors.WHITE, weight=ft.FontWeight.W_900, text_align=ft.TextAlign.CENTER),
+                        bgcolor=ft.Colors.RED_500, width=20, height=20, border_radius=10, 
                         alignment=ft.alignment.center, right=2, top=2
                     )
                 ]),
