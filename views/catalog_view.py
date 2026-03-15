@@ -155,5 +155,5 @@ def build_catalog_panel(page, state, all_products, on_add_to_cart, on_toggle_fav
 
     return ft.Container(
         expand=True, padding=ft.Padding.symmetric(horizontal=20, vertical=30),
-        content=ft.Column([grid], scroll=ft.ScrollMode.AUTO, expand=True)
+        content=ft.Column([grid], scroll=ft.ScrollMode.HIDDEN, expand=True)
     ), refresh_grid

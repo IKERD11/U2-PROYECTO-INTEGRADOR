@@ -57,7 +57,7 @@ def main(page: ft.Page):
         page.update()
 
     # ── CART DIALOG ────────────────────────────────────────────────
-    cart_body = ft.Column(controls=[], scroll=ft.ScrollMode.AUTO, height=400, spacing=15)
+    cart_body = ft.Column(controls=[], scroll=ft.ScrollMode.HIDDEN, height=400, spacing=15)
 
     def _refresh_cart():
         items = state.get_cart_items()
@@ -146,7 +146,7 @@ def main(page: ft.Page):
         main_dialog.title = None
         main_dialog.content = ft.Container(
             width=dialog_width,
-            content=ft.Column(scroll=ft.ScrollMode.AUTO, controls=[
+            content=ft.Column(scroll=ft.ScrollMode.HIDDEN, controls=[
                 ft.Stack([
                     ft.Image(src=product.image_path, height=img_height, fit=ft.BoxFit.COVER, border_radius=16,
                              width=float("inf")),
