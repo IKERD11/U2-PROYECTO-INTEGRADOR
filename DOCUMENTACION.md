@@ -2,7 +2,7 @@
 
 Este proyecto es una aplicación interactiva desarrollada en Python utilizando el moderno framework **Flet**. La aplicación simula una tienda en línea (TechStore) donde los usuarios pueden visualizar productos, agregarlos a un carrito de compras y marcarlos como favoritos.
 
-🌍 **Enlace al proyecto:** [https://productoscat.netlify.app/](https://productoscat.netlify.app/)
+🌍 **Enlace al proyecto:** [https://69b9ea81e7de081d04f3c15e--idyllic-sfogliatella-c4e603.netlify.app/](https://69b9ea81e7de081d04f3c15e--idyllic-sfogliatella-c4e603.netlify.app/)
 
 ## 🚀 Características Principales
 
@@ -164,7 +164,7 @@ def get_products() -> list[Product]:
         # ... más productos
     ]
 ```
-- **`generate_qr.py`**: Un pequeño script en python que mediante `qrcode` genera una imagen QR dirigiendo automáticamente hacia [https://productoscat.netlify.app/](https://productoscat.netlify.app/).
+- **`generate_qr.py`**: Un pequeño script en python que mediante `qrcode` genera una imagen QR dirigiendo automáticamente hacia [https://69b9ea81e7de081d04f3c15e--idyllic-sfogliatella-c4e603.netlify.app/](https://69b9ea81e7de081d04f3c15e--idyllic-sfogliatella-c4e603.netlify.app/).
 
 ---
 
@@ -286,7 +286,7 @@ Cuando el usuario da clic en la imagen, se llama al modal. El pop-up de Flet (`f
 ```
 
 ---
-¡Gracias por visitar el proyecto! Explora el código y prueba la tienda funcional en el [enlace oficial](https://productoscat.netlify.app/).
+¡Gracias por visitar el proyecto! Explora el código y prueba la tienda funcional en el [enlace oficial](https://69b9ea81e7de081d04f3c15e--idyllic-sfogliatella-c4e603.netlify.app/).
 
 ---
 
